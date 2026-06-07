@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analítico: Novo Perfil de TI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Phosphor Icons para ícones modernos -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind slate-50 */
+        }
+        
+        /* Custom scrollbar para a tabela */
+        .table-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .table-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .table-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .table-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                    <i class="ph ph-chart-polar text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 leading-tight">Raio-X do Edital TI</h1>
+                    <p class="text-sm text-slate-500">Transição: TI Tradicional ➔ Produtos Digitais</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full text-sm font-medium text-slate-600">
+                <i class="ph-fill ph-check-circle text-emerald-500"></i>
+                Atualizado para o Novo Perfil
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
+        
+        <!-- KPI Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-start">
+                    <p class="text-sm font-medium text-slate-500">Conteúdo Inédito</p>
+                    <div class="bg-emerald-100 text-emerald-600 p-2 rounded-lg"><i class="ph ph-trend-up text-lg"></i></div>
+                </div>
+                <h3 class="text-3xl font-bold text-slate-900 mt-4">~45%</h3>
+                <p class="text-sm text-emerald-600 font-medium mt-2">+ Foco em Produto e IA</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-start">
+                    <p class="text-sm font-medium text-slate-500">Conteúdo Descartado</p>
+                    <div class="bg-rose-100 text-rose-600 p-2 rounded-lg"><i class="ph ph-trash text-lg"></i></div>
+                </div>
+                <h3 class="text-3xl font-bold text-slate-900 mt-4">~35%</h3>
+                <p class="text-sm text-rose-600 font-medium mt-2">- Infraestrutura e Redes</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-start">
+                    <p class="text-sm font-medium text-slate-500">Novo Perfil Alvo</p>
+                    <div class="bg-indigo-100 text-indigo-600 p-2 rounded-lg"><i class="ph ph-user-focus text-lg"></i></div>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mt-4 leading-snug">Product Manager Técnico</h3>
+                <p class="text-sm text-slate-500 mt-1">Especialista em valor e negócios</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col">
+                <div class="flex justify-between items-start">
+                    <p class="text-sm font-medium text-slate-500">Linguagem Core</p>
+                    <div class="bg-amber-100 text-amber-600 p-2 rounded-lg"><i class="ph ph-code text-lg"></i></div>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mt-4">Java & Spring</h3>
+                <p class="text-sm text-slate-500 mt-1">Alinhado à arquitetura PDPJ-Br</p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Radar Chart: Mudança de Perfil -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:col-span-1 flex flex-col">
+                <h2 class="text-lg font-bold text-slate-800 mb-1">Mudança de Perfil</h2>
+                <p class="text-sm text-slate-500 mb-6">Comparativo de competências (V1 vs V2)</p>
+                <div class="relative flex-grow flex items-center justify-center min-h-[300px]">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Charts: Ascensão e Queda -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 lg:col-span-2 flex flex-col">
+                <h2 class="text-lg font-bold text-slate-800 mb-1">O que Entrou vs. O que Saiu</h2>
+                <p class="text-sm text-slate-500 mb-6">Variação de peso dos assuntos no edital</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                    <!-- Ganharam Espaço -->
+                    <div class="flex flex-col">
+                        <h3 class="text-sm font-semibold text-emerald-600 mb-4 flex items-center gap-2">
+                            <i class="ph-fill ph-arrow-circle-up"></i> Top Assuntos em Ascensão
+                        </h3>
+                        <div class="relative flex-grow min-h-[250px]">
+                            <canvas id="gainersChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Perderam Espaço -->
+                    <div class="flex flex-col">
+                        <h3 class="text-sm font-semibold text-rose-600 mb-4 flex items-center gap-2">
+                            <i class="ph-fill ph-arrow-circle-down"></i> Top Assuntos Eliminados/Reduzidos
+                        </h3>
+                        <div class="relative flex-grow min-h-[250px]">
+                            <canvas id="losersChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Matriz de Decisão -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800 mb-1">Matriz de Decisão para Estudos</h2>
+                    <p class="text-sm text-slate-500">Guia prático baseado na variação do edital</p>
+                </div>
+                
+                <!-- Filtros -->
+                <div class="flex flex-wrap gap-2" id="filter-buttons">
+                    <button data-filter="Todos" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-slate-800 text-white hover:bg-slate-700">Todos</button>
+                    <button data-filter="Novo" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200">✨ Novos</button>
+                    <button data-filter="Aprofundar" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200">📈 Aprofundar</button>
+                    <button data-filter="Manter" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200">✅ Manter</button>
+                    <button data-filter="Cortar" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200">❌ Cortar</button>
+                </div>
+            </div>
+
+            <!-- Tabela -->
+            <div class="overflow-x-auto table-scroll rounded-lg border border-slate-200">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                            <th class="p-4 font-medium">Macro Tema</th>
+                            <th class="p-4 font-medium">Assunto Específico</th>
+                            <th class="p-4 font-medium text-center">Peso Antigo (V1)</th>
+                            <th class="p-4 font-medium text-center">Peso Novo (V2)</th>
+                            <th class="p-4 font-medium text-center">Variação</th>
+                            <th class="p-4 font-medium text-center">Ação Recomendada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="text-sm text-slate-700 divide-y divide-slate-100">
+                        <!-- Linhas geradas por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Dados do CSV convertidos para JSON
+        const rawData = [
+            { macro: "Infraestrutura e Redes", assunto: "Cabeamento estruturado e Fibras", v1: 5, v2: 0, var: -5, status: "Cortar" },
+            { macro: "Infraestrutura e Redes", assunto: "Protocolos (TCP/IP OSPF BGP)", v1: 5, v2: 0, var: -5, status: "Cortar" },
+            { macro: "Sistemas Operacionais", assunto: "Linux e Windows Server", v1: 5, v2: 0, var: -5, status: "Cortar" },
+            { macro: "Segurança Tradicional", assunto: "Firewall VPN e Antivírus", v1: 4, v2: 0, var: -4, status: "Cortar" },
+            { macro: "Governança Tradicional", assunto: "ITIL COBIT e PMBOK", v1: 5, v2: 0, var: -5, status: "Cortar" },
+            { macro: "Linguagens de Programação", assunto: "PHP Python C C# .NET", v1: 4, v2: 0, var: -4, status: "Cortar" },
+            { macro: "Banco de Dados", assunto: "Oracle PostgreSQL e PL/SQL", v1: 5, v2: 0, var: -5, status: "Cortar" },
+            { macro: "Banco de Dados", assunto: "Modelagem Relacional e Dimensional", v1: 3, v2: 3, var: 0, status: "Manter" },
+            { macro: "Linguagens de Programação", assunto: "Java Spring e Hibernate", v1: 3, v2: 5, var: 2, status: "Aprofundar" },
+            { macro: "Arquitetura", assunto: "Microsserviços e APIs", v1: 3, v2: 5, var: 2, status: "Aprofundar" },
+            { macro: "Arquitetura", assunto: "DDD e Modernização de Legado", v1: 1, v2: 5, var: 4, status: "Aprofundar" },
+            { macro: "Segurança Moderna", assunto: "Security by Design e IAM", v1: 1, v2: 4, var: 3, status: "Aprofundar" },
+            { macro: "Segurança Moderna", assunto: "Threat Modeling e SBOM", v1: 0, v2: 4, var: 4, status: "Novo" },
+            { macro: "Gestao de Produto", assunto: "Product Management e Visão", v1: 0, v2: 5, var: 5, status: "Novo" },
+            { macro: "Gestao de Produto", assunto: "Product Discovery e Design Thinking", v1: 0, v2: 5, var: 5, status: "Novo" },
+            { macro: "Gestao de Produto", assunto: "Métricas (NPS CSAT Cohort)", v1: 0, v2: 5, var: 5, status: "Novo" },
+            { macro: "Agilidade", assunto: "Scrum e Kanban", v1: 3, v2: 4, var: 1, status: "Manter" },
+            { macro: "Agilidade em Escala", assunto: "Flight Levels e PI Planning", v1: 0, v2: 4, var: 4, status: "Novo" },
+            { macro: "Inteligencia Artificial", assunto: "GenAI e Prompts", v1: 0, v2: 5, var: 5, status: "Novo" },
+            { macro: "Inteligencia Artificial", assunto: "RAG e IA no SDLC", v1: 0, v2: 5, var: 5, status: "Novo" },
+            { macro: "Engenharia de Dados", assunto: "Data Lakehouse e ETL/ELT", v1: 1, v2: 4, var: 3, status: "Aprofundar" },
+            { macro: "Automação", assunto: "RPA e Hyperautomation", v1: 0, v2: 4, var: 4, status: "Novo" },
+            { macro: "Contratações de TI", assunto: "Lei 14.133 e Normativos CNJ", v1: 2, v2: 5, var: 3, status: "Aprofundar" }
+        ];
+
+        // Configuração global da fonte para Chart.js
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // 1. Renderizar Gráfico de Radar
+        const renderRadarChart = () => {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            // Dados agregados para o radar (Médias ou aproximações baseadas na análise)
+            const radarData = {
+                labels: ['Infra e Redes', 'Gov. Tradicional', 'Dev e Arquitetura', 'Produto e UX', 'IA e Dados', 'Segurança'],
+                datasets: [
+                    {
+                        label: 'Edital V1 (Antigo)',
+                        data: [5, 5, 3, 0, 0.5, 4],
+                        backgroundColor: 'rgba(148, 163, 184, 0.2)', // Slate 400
+                        borderColor: 'rgba(148, 163, 184, 1)',
+                        pointBackgroundColor: 'rgba(148, 163, 184, 1)',
+                        borderWidth: 2,
+                    },
+                    {
+                        label: 'Edital V2 (Novo)',
+                        data: [0, 0, 5, 5, 4.5, 4],
+                        backgroundColor: 'rgba(99, 102, 241, 0.3)', // Indigo 500
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+                        borderWidth: 2,
+                    }
+                ]
+            };
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: radarData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(226, 232, 240, 1)' },
+                            grid: { color: 'rgba(226, 232, 240, 1)' },
+                            pointLabels: {
+                                font: { size: 11, weight: '500' },
+                                color: '#475569'
+                            },
+                            ticks: {
+                                display: false,
+                                min: 0,
+                                max: 5
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                    }
+                }
+            });
+        };
+
+        // 2. Renderizar Gráficos de Barras (Ascensão e Queda)
+        const renderBarCharts = () => {
+            // Filtrar Top Gainers (Var >= 4)
+            const gainers = rawData.filter(d => d.var >= 4).sort((a, b) => b.var - a.var).slice(0, 5);
+            // Filtrar Top Losers (Var <= -4)
+            const losers = rawData.filter(d => d.var <= -4).sort((a, b) => a.var - b.var).slice(0, 5); // Orderm decrescente de queda
+
+            // Chart Top Gainers
+            new Chart(document.getElementById('gainersChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: gainers.map(g => g.assunto.split(' ')[0] + ' ' + (g.assunto.split(' ')[1] || '')), // Nomes curtos
+                    datasets: [{
+                        label: 'Aumento de Importância',
+                        data: gainers.map(g => g.var),
+                        backgroundColor: 'rgba(16, 185, 129, 0.8)', // Emerald 500
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Barra horizontal
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, grid: { display: false }, max: 5 },
+                        y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                    }
+                }
+            });
+
+            // Chart Top Losers
+            new Chart(document.getElementById('losersChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: losers.map(l => l.assunto.split(' ')[0] + ' ' + (l.assunto.split(' ')[1] || '')),
+                    datasets: [{
+                        label: 'Queda de Importância',
+                        data: losers.map(l => Math.abs(l.var)), // Mostrando como valor absoluto para estética
+                        backgroundColor: 'rgba(244, 63, 94, 0.8)', // Rose 500
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, grid: { display: false }, max: 5 },
+                        y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                    }
+                }
+            });
+        };
+
+        // 3. Renderizar Tabela Interativa
+        const tableBody = document.getElementById('table-body');
+        
+        const getStatusStyles = (status) => {
+            switch(status) {
+                case 'Novo': return 'bg-purple-100 text-purple-700 border-purple-200';
+                case 'Aprofundar': return 'bg-blue-100 text-blue-700 border-blue-200';
+                case 'Manter': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+                case 'Cortar': return 'bg-rose-100 text-rose-700 border-rose-200';
+                case 'Reduzir': return 'bg-orange-100 text-orange-700 border-orange-200';
+                default: return 'bg-gray-100 text-gray-700';
+            }
+        };
+
+        const renderTable = (data) => {
+            tableBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-400">Nenhum dado encontrado para este filtro.</td></tr>';
+                return;
+            }
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition-colors';
+                
+                // Formatação visual da Variação
+                let varHtml = '';
+                if (row.var > 0) varHtml = `<span class="text-emerald-600 font-medium flex items-center justify-center gap-1"><i class="ph-bold ph-arrow-up"></i>${row.var}</span>`;
+                else if (row.var < 0) varHtml = `<span class="text-rose-600 font-medium flex items-center justify-center gap-1"><i class="ph-bold ph-arrow-down"></i>${Math.abs(row.var)}</span>`;
+                else varHtml = `<span class="text-slate-400 font-medium flex items-center justify-center gap-1"><i class="ph-bold ph-minus"></i>0</span>`;
+
+                tr.innerHTML = `
+                    <td class="p-4 font-medium text-slate-900">${row.macro}</td>
+                    <td class="p-4">${row.assunto}</td>
+                    <td class="p-4 text-center text-slate-500">${row.v1}</td>
+                    <td class="p-4 text-center font-bold text-indigo-600">${row.v2}</td>
+                    <td class="p-4 text-center">${varHtml}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold border ${getStatusStyles(row.status)}">
+                            ${row.status}
+                        </span>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        };
+
+        // 4. Lógica de Filtros
+        const setupFilters = () => {
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const filterValue = e.target.getAttribute('data-filter');
+                    
+                    // Atualiza estilo dos botões
+                    buttons.forEach(b => {
+                        b.classList.remove('bg-slate-800', 'text-white');
+                        b.classList.add('bg-slate-100', 'text-slate-600');
+                    });
+                    e.target.classList.remove('bg-slate-100', 'text-slate-600');
+                    e.target.classList.add('bg-slate-800', 'text-white');
+
+                    // Filtra os dados
+                    if (filterValue === 'Todos') {
+                        renderTable(rawData);
+                    } else {
+                        const filteredData = rawData.filter(d => d.status === filterValue || (filterValue === 'Cortar' && d.status === 'Reduzir')); 
+                        renderTable(filteredData);
+                    }
+                });
+            });
+        };
+
+        // Inicialização
+        window.onload = () => {
+            renderRadarChart();
+            renderBarCharts();
+            renderTable(rawData);
+            setupFilters();
+        };
+    </script>
+</body>
+</html>
